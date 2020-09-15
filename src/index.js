@@ -1,16 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import { routerConfig } from './routes/routes';
 import * as serviceWorker from './serviceWorker';
+import App from './App';
+
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { routerConfig } from './routes/routes';
+import rootReducer from './reducers';
+
+import dotenv from 'dotenv';
+
 import './utils/custom.scss';
+
+dotenv.config();
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App routerConfig={routerConfig} />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App routerConfig={routerConfig} />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

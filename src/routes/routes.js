@@ -1,4 +1,4 @@
-import React from 'react';
+import { lazy } from 'react';
 
 export const routes = {
   home: '/',
@@ -18,24 +18,22 @@ export const routerConfig = [
   {
     name: 'Search',
     path: routes.search,
-    component: () => <div>Search</div>,
-    exact: true,
-    routes: [
-      {
-        name: 'SearchResults',
-        path: routes.searchResult,
-        component: () => <div>SearchResults</div>,
-      },
-    ],
+    component: lazy(() => import('../pages/Search')),
   },
   {
     name: 'Details',
     path: routes.details,
-    component: () => <div>Details</div>,
+    component: lazy(() => import('../pages/Details')),
   },
   {
     name: 'NotFound',
     path: routes.notFound,
-    component: () => <div>NotFound</div>,
+    component: lazy(() => import('../pages/NotFound')),
   },
 ];
+
+export const searchResultRoute = {
+  name: 'SearchResult',
+  path: routes.searchResult,
+  component: lazy(() => import('../pages/SearchResult')),
+};

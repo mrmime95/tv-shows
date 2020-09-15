@@ -1,14 +1,34 @@
-import React from 'react';
-import Card from './components/Card';
+import React, { Suspense } from 'react';
 import RouteRenderer from './routes/RouteRenderer';
 
-function App({ routerConfig }) {
+import { connect } from 'react-redux';
+import { fetchUser } from './actions/userActions';
+import Navbar from './components/Navbar';
+
+function App({ routerConfig, fetchUser }) {
+  fetchUser();
   return (
-    <div className="App">
-      <RouteRenderer routerConfig={routerConfig} />
-      <Card></Card>
+    <div className="app">
+      <Navbar />
+      <div className="container">
+        <Suspense fallback={<div>Loading...</div>}>
+          <RouteRenderer routerConfig={routerConfig} />
+        </Suspense>
+      </div>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    userReducer: state.userReducer,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchUser: () => dispatch(fetchUser()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

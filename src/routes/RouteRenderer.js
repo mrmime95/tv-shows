@@ -6,38 +6,28 @@ import { Redirect, Route, Switch } from 'react-router-dom';
  * @param {Route[]} routes
  */
 function RouteRenderer({ routerConfig, ...props }) {
-  return <Switch {...props}>{createElements(routerConfig)}</Switch>;
+  return <Switch {...props}>{createRouteElements(routerConfig)}</Switch>;
 }
 
-function createElement(route) {
+export function createRouteElement(route) {
   if (route.redirect) {
-    return (
-      <Redirect key={route.name} from={route.path} to={route.redirect} exact />
-    );
+    return <Redirect key={route.name} from={route.path} to={route.redirect} exact />;
   }
 
-  return (
-    <Route
-      key={route.name}
-      path={route.path}
-      exact={route.exact}
-      component={route.component}
-    />
-  );
+  return <Route key={route.name} path={route.path} exact={route.exact} component={route.component} />;
 }
 
-function createElements(routerConfig) {
+function createRouteElements(routerConfig) {
   const elements = [];
 
   for (let i = 0; i < routerConfig.length; i++) {
-    elements.push(createElement(routerConfig[i]));
+    elements.push(createRouteElement(routerConfig[i]));
 
     if (routerConfig[i].routes) {
-      elements.push(...createElements(routerConfig[i].routes));
+      elements.push(...createRouteElements(routerConfig[i].routes));
     }
   }
 
-  console.log({ elements });
   return elements;
 }
 
