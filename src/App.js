@@ -1,12 +1,16 @@
-import React, { Suspense } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import RouteRenderer from './routes/RouteRenderer';
 
-import { connect } from 'react-redux';
-import { fetchUser } from './actions/userActions';
 import Navbar from './components/Navbar';
+import api from './utils/api';
 
-function App({ routerConfig, fetchUser }) {
-  fetchUser();
+function App({ routerConfig }) {
+  useEffect(() => {
+    api.login().then(data => {
+      localStorage.setItem('token', data.token);
+    });
+  }, []);
+
   return (
     <div className="app">
       <Navbar />
@@ -19,16 +23,4 @@ function App({ routerConfig, fetchUser }) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    userReducer: state.userReducer,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchUser: () => dispatch(fetchUser()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

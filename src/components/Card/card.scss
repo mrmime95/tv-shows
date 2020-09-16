@@ -1,14 +1,33 @@
-.bd-placeholder-img {
-  font-size: 1.125rem;
-  text-anchor: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
+  }
+}
+
+.overview-container {
+  display: -webkit-box;
+  max-height: 10rem;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  -webkit-line-clamp: 4;
+}
+.card-image-container {
+  position: relative;
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .card-image {
+    width: 200px;
+    height: 250px;
+    object-fit: contain;
+    position: absolute;
   }
 }

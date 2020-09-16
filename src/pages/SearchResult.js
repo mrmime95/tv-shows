@@ -1,15 +1,22 @@
 import React from 'react';
 import Card from '../components/Card';
+import { TVDB } from '../utils/constants';
+import './searchResult.scss';
 
-export default function SearchResult() {
+export default function SearchResult({ seriesArray = [] }) {
   return (
-    <div>
-      <Card
-        linkTo={`/details/${432}`}
-        title="Friends"
-        firstAired="22-22-2222"
-        overview="Est velit enim qui culpa consectetur. Labore irure consequat aute nisi Lorem do fugiat et. Enim sit reprehenderit id adipisicing ad do consequat laboris nulla voluptate adipisicing anim quis exercitation. Minim enim dolor adipisicing ullamco ipsum quis. Culpa aute tempor velit magna. Tempor minim veniam commodo fugiat Lorem excepteur cupidatat Lorem officia."
-      />
+    <div className="search-result-container row">
+      {seriesArray.map(series => (
+        <Card
+          key={series.id}
+          linkTo={`/details/${series.id}`}
+          title={series.seriesName}
+          image={`${TVDB}${series.image}`}
+          network={series.network}
+          firstAired={series.firstAired}
+          overview={series.overview}
+        />
+      ))}
     </div>
   );
 }

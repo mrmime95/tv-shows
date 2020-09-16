@@ -1,0 +1,18 @@
+.react-rater-star {
+  &.is-active {
+    color: rgb(255, 170, 0);
+  }
+  &.is-active-half:before {
+    color: rgb(255, 170, 0);
+  }
+}
+
+.seasons-list {
+  ul {
+    display: flex;
+    justify-content: center;
+  }
+  h5 {
+    margin: 0 10px 0 0;
+  }
+}

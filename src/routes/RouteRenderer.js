@@ -9,12 +9,16 @@ function RouteRenderer({ routerConfig, ...props }) {
   return <Switch {...props}>{createRouteElements(routerConfig)}</Switch>;
 }
 
-export function createRouteElement(route) {
+export function createRouteElement(route, CustomComponent) {
   if (route.redirect) {
     return <Redirect key={route.name} from={route.path} to={route.redirect} exact />;
   }
-
-  return <Route key={route.name} path={route.path} exact={route.exact} component={route.component} />;
+  const Component = CustomComponent ? CustomComponent : route.component;
+  return (
+    <Route key={route.name} path={route.path} exact={route.exact}>
+      <Component />
+    </Route>
+  );
 }
 
 function createRouteElements(routerConfig) {

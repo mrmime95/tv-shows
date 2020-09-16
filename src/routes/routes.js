@@ -35,5 +35,4 @@ export const routerConfig = [
 export const searchResultRoute = {
   name: 'SearchResult',
   path: routes.searchResult,
-  component: lazy(() => import('../pages/SearchResult')),
 };

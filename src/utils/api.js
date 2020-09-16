@@ -1,3 +1,5 @@
+import { SERVER, TARGET_URL } from './constants';
+
 const login = () =>
   fetchFunction('/login', {
     method: 'POST',
@@ -8,18 +10,36 @@ const login = () =>
     }),
   });
 
-export default {
-  login,
+const series = {
+  search: params =>
+    fetchFunction('/search/series', {
+      method: 'GET',
+      searchParams: params,
+    }),
+  getSeries: id =>
+    fetchFunction(`/series/${id}`, {
+      method: 'GET',
+    }),
+  getEpisodes: ({ id, page = 1 }) =>
+    fetchFunction(`/series/${id}/episodes`, {
+      method: 'GET',
+      searchParams: { page },
+    }),
 };
 
-async function fetchFunction(path, params) {
+export default {
+  login,
+  series,
+};
+
+async function fetchFunction(path, { searchParams, ...params }) {
   try {
-    const res = await fetch(`https://cors-proxy-tvshows.herokuapp.com${path}`, {
+    const res = await fetch(`${SERVER}${path}${searchParams ? `?${new URLSearchParams(searchParams)}` : ''}`, {
       ...params,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': params.method === 'GET' ? 'none' : 'application/json',
         Accept: 'application/json',
-        'Target-URL': 'https://api.thetvdb.com',
+        'Target-URL': TARGET_URL,
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });

@@ -12,8 +12,10 @@
   z-index: 10000;
   overflow: hidden;
   .modal-wrapper {
-    overflow: hidden;
     background: #fff;
+    max-height: 80%;
+    max-width: 500px;
+    overflow: auto;
     .modal-title-container {
       padding: 15px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.2);
