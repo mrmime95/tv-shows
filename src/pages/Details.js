@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Rater from 'react-rater';
 import 'react-rater/lib/react-rater.css';
 /* import { WithContext as ReactTags } from 'react-tag-input'; */
 
@@ -8,15 +7,20 @@ import Card from '../components/Card';
 import ModalControl from '../components/Modal/ModalControl';
 import api from '../utils/api';
 import { TVDB } from '../utils/constants';
-import { range } from '../utils/numbers';
 
 import './details.scss';
+import NotMark from '../components/icons/NotMark';
+import CheckMark from '../components/icons/CheckMark';
+import StarRater from '../components/StarRater';
+import Pagination from '../components/Pagination';
+import Loading from '../components/Loading';
 
 export default function Details() {
   const [currentSeason, setCurrentSeason] = useState(1);
   const [series, setSeries] = useState();
   const [episodes, setEpisodes] = useState([]);
   const [episodesPage, setEpisodesPage] = useState(1);
+  const [posterExists, setPosterExists] = useState(false);
   let { id: seriesId } = useParams();
 
   const allSeasons = series && Number(series.season);
@@ -33,55 +37,58 @@ export default function Details() {
       data.links.next && setEpisodesPage(data.links.next);
     });
   }, [episodesPage, seriesId]);
+
   return (
-    <div>
+    <div className="details">
       {series ? (
         <>
-          <div className="row jumbotron">
-            <div className="col-12 col-lg-9 description">
-              <h2 className="title">{series.seriesName}</h2>
-              <div className="overview">{series.overview}</div>
-              <div className="status">
-                <span>
-                  Still running: <span>{series.status === 'Ended' ? 'X' : 'Y'}</span>
-                </span>
+          <div className="season-header row jumbotron">
+            <div className="col-12 col-lg-9 details-description">
+              <div className="details-description__header">
+                <div className="desctiption__title-rating">
+                  <h2 className="title">{series.seriesName}</h2>
+                  <StarRater total={10} rating={series.siteRating} />
+                </div>
+                <div className="details-description__air-status">
+                  <div className="details-description__air">
+                    {series.airsDayOfWeek} =&gt; {series.airsTime}
+                  </div>
+                  <div className="status">
+                    <span>
+                      Still running: <span>{series.status === 'Ended' ? <NotMark /> : <CheckMark />}</span>
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="air-days-of-week">{series.airsDayOfWeek}</div>
-              <div className="airs-time">{series.airsTime}</div>
-              <div className="site-rating">
-                <Rater total={10} rating={series.siteRating} interactive={false} />
-                <sub>({series.siteRating})</sub>
+              <div className="overview">
+                <h6>Description:</h6>
+                <p>{series.overview}</p>
               </div>
+
               <div className="genre">
                 {/* <ReactTags tags={series.genre} suggestions={series.genre} readOnly handleDrag={() => {}} /> */}
               </div>
             </div>
-            {series.poster && <img className="col-12 col-lg-3" src={`${TVDB}/banners/${series.poster}`} alt={series.seriesName} />}
+            {series.poster && (
+              <img
+                className={`details-poster col-6 col-lg-3 ${!posterExists && 'd-none'}`}
+                onLoad={() => setPosterExists(true)}
+                onError={() => setPosterExists(false)}
+                src={`${TVDB}/banners/${series.poster}`}
+                alt={series.seriesName}
+              />
+            )}
           </div>
 
           <div className="seasons-list">
             <h5>Seasons: </h5>
-            <ul className="pagination">
-              <li className={`page-item ${currentSeason === 1 && 'disabled'}`}>
-                <button className="page-link" onClick={handlePreviousClick}>
-                  Previous
-                </button>
-              </li>
-              {range(1, allSeasons).map(season => {
-                return (
-                  <li key={season} className={`page-item ${season === currentSeason && 'active'}`}>
-                    <button className="page-link" onClick={() => handleSeasonClick(season)}>
-                      {season}
-                    </button>
-                  </li>
-                );
-              })}
-              <li className={`page-item ${currentSeason === allSeasons && 'disabled'}`}>
-                <button className="page-link" onClick={handleNextClick}>
-                  Next
-                </button>
-              </li>
-            </ul>
+            <Pagination
+              currentPage={currentSeason}
+              onPreviousClick={handlePreviousClick}
+              onNextClick={handleNextClick}
+              onPageClick={handleSeasonClick}
+              allPage={allSeasons}
+            />
           </div>
 
           <div className="episode-cards row">
@@ -102,7 +109,7 @@ export default function Details() {
                         let modalWithImage = false;
                         return (
                           <div className="episode-modal">
-                            <div className="episode-modal__header">
+                            <div className="episode-modal__header ">
                               <div className="episode-modal__header-text">
                                 <h5>{`S${episode.airedSeason}E${episode.airedEpisodeNumber} ${episode.episodeName}`}</h5>
                                 <h6>
@@ -125,7 +132,7 @@ export default function Details() {
                                 />
                               </div>
                             </div>
-                            <p>{episode.overview}</p>
+                            <p className="m-0">{episode.overview}</p>
                           </div>
                         );
                       }}
@@ -140,7 +147,7 @@ export default function Details() {
           </div>
         </>
       ) : (
-        <div>Loading...</div>
+        <Loading />
       )}
     </div>
   );

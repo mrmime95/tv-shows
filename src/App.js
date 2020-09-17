@@ -3,6 +3,7 @@ import RouteRenderer from './routes/RouteRenderer';
 
 import Navbar from './components/Navbar';
 import api from './utils/api';
+import Loading from './components/Loading';
 
 function App({ routerConfig }) {
   useEffect(() => {
@@ -15,7 +16,7 @@ function App({ routerConfig }) {
     <div className="app">
       <Navbar />
       <div className="container">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loading />}>
           <RouteRenderer routerConfig={routerConfig} />
         </Suspense>
       </div>

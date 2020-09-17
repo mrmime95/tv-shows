@@ -1,0 +1,10 @@
+.star-rater {
+  .react-rater-star {
+    &.is-active {
+      color: rgb(255, 170, 0);
+    }
+    &.is-active-half:before {
+      color: rgb(255, 170, 0);
+    }
+  }
+}

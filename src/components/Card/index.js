@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Rater from 'react-rater';
 import { Link } from 'react-router-dom';
+import StarRater from '../StarRater';
 import './card.scss';
 import Thumbnail from './Thumbnail';
 
@@ -19,7 +19,7 @@ export default function Card({
   const [goodImage, setGoodImage] = useState(false);
   return (
     <div {...props}>
-      <div className="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+      <div className="card-component row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
         <div className="card-texts col p-4 d-flex flex-column">
           <h4 className="card-title mb-0">{title}</h4>
           <div className="mb-1 text-muted">{firstAired}</div>
@@ -29,13 +29,7 @@ export default function Card({
             </div>
           )}
           <strong className="d-inline-block mb-2 text-primary">{network}</strong>
-          {linkTo && <Link to={linkTo} className="stretched-link"></Link>}
-          {siteRating && (
-            <div className="site-rating">
-              <Rater total={10} rating={siteRating} interactive={false} />
-              <sub>({siteRating})</sub>
-            </div>
-          )}
+          {siteRating && <StarRater total={10} rating={siteRating} />}
           {children && <div className="card-children-container">{children}</div>}
         </div>
         {image && (
@@ -44,6 +38,7 @@ export default function Card({
             <Thumbnail />
           </div>
         )}
+        {linkTo && <Link to={linkTo} className="stretched-link"></Link>}
       </div>
     </div>
   );

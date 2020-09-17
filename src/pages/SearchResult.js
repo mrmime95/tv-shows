@@ -1,7 +1,6 @@
 import React from 'react';
 import Card from '../components/Card';
 import { TVDB } from '../utils/constants';
-import './searchResult.scss';
 
 export default function SearchResult({ seriesArray = [] }) {
   return (
