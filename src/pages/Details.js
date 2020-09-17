@@ -84,41 +84,59 @@ export default function Details() {
             </ul>
           </div>
 
-          <div className="episode-cards">
+          <div className="episode-cards row">
             {episodes
               .filter(episode => episode.airedSeason === currentSeason)
-              .map(episode => (
-                <>
+              .map(episode => {
+                return (
                   <Card
                     key={episode.id}
                     title={`S${episode.airedSeason}E${episode.airedEpisodeNumber} ${episode.episodeName}`}
                     firstAired={episode.firstAired}
                     siteRating={episode.siteRating}
                     image={`${TVDB}/${episode.filename}`}
+                    className="col-12 col-md-6 col-lg-4"
                   >
                     <ModalControl
-                      content={() => (
-                        <div>
-                          <h5>{`S${episode.airedSeason}E${episode.airedEpisodeNumber} ${episode.episodeName}`}</h5>
-                          <h6>
-                            Directed by:
-                            {episode.directors.map((director, index) => (
-                              <span>
-                                {director}
-                                {index < episode.directors.length - 1 && ', '}
-                              </span>
-                            ))}
-                          </h6>
-                          <img className="card-image" src={`${TVDB}/${episode.filename}`} alt={episode.episodeName} />
-                          <p>{episode.overview}</p>
-                        </div>
-                      )}
+                      content={() => {
+                        let modalWithImage = false;
+                        return (
+                          <div className="episode-modal">
+                            <div className="episode-modal__header">
+                              <div className="episode-modal__header-text">
+                                <h5>{`S${episode.airedSeason}E${episode.airedEpisodeNumber} ${episode.episodeName}`}</h5>
+                                <h6>
+                                  Directed by:
+                                  {episode.directors.map((director, index) => (
+                                    <span key={director}>
+                                      {director}
+                                      {index < episode.directors.length - 1 && ', '}
+                                    </span>
+                                  ))}
+                                </h6>
+                              </div>
+                              <div className={`episode-modal__header-image__container ${!modalWithImage && 'd-none'}`}>
+                                <img
+                                  className="episode-modal__header-image"
+                                  onLoad={() => (modalWithImage = true)}
+                                  onError={() => (modalWithImage = false)}
+                                  src={`${TVDB}/${episode.filename}`}
+                                  alt={episode.episodeName}
+                                />
+                              </div>
+                            </div>
+                            <p>{episode.overview}</p>
+                          </div>
+                        );
+                      }}
                     >
-                      <button>This button opens the Modal</button>
+                      <button type="button" className="btn btn-outline-primary modal-opener btn-sm">
+                        More details
+                      </button>
                     </ModalControl>
                   </Card>
-                </>
-              ))}
+                );
+              })}
           </div>
         </>
       ) : (

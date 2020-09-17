@@ -4,17 +4,21 @@
   }
 }
 
-.overview-container {
-  display: -webkit-box;
-  max-height: 10rem;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: pre-wrap;
-  -webkit-line-clamp: 4;
+.card-texts {
+  min-width: 50%;
+  .overview-container {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+    -webkit-line-clamp: 4;
+    min-height: 100px;
+  }
 }
 .card-image-container {
   position: relative;
+  margin: 0 auto;
   .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -29,5 +33,19 @@
     height: 250px;
     object-fit: contain;
     position: absolute;
+  }
+}
+
+.card-children-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  .modal-opener {
+    border: 0;
+    padding: 0 12px;
+    &:hover {
+      background-color: inherit;
+      color: inherit;
+    }
   }
 }

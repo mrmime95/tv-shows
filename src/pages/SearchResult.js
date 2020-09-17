@@ -14,7 +14,9 @@ export default function SearchResult({ seriesArray = [] }) {
           image={`${TVDB}${series.image}`}
           network={series.network}
           firstAired={series.firstAired}
-          overview={series.overview}
+          overview={series.overview || ''}
+          className="col-12 col-md-6"
+          withImage
         />
       ))}
     </div>
