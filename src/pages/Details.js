@@ -14,6 +14,7 @@ import CheckMark from '../components/icons/CheckMark';
 import StarRater from '../components/StarRater';
 import Pagination from '../components/Pagination';
 import Loading from '../components/Loading';
+import Tags from '../components/Tags';
 
 export default function Details() {
   const [currentSeason, setCurrentSeason] = useState(1);
@@ -66,7 +67,7 @@ export default function Details() {
               </div>
 
               <div className="genre">
-                {/* <ReactTags tags={series.genre} suggestions={series.genre} readOnly handleDrag={() => {}} /> */}
+                <Tags tags={series.genre} />
               </div>
             </div>
             {series.poster && (

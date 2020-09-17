@@ -1,0 +1,8 @@
+.tags {
+  border: 1px dashed #faa;
+  padding: 10px;
+  display: inline-block;
+  .tag:last-child {
+    margin: 0 !important;
+  }
+}
